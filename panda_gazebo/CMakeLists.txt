@@ -12,6 +12,8 @@ find_package(robot_state_publisher REQUIRED)
 find_package(gazebo_ros REQUIRED)
 find_package(xacro REQUIRED)
 find_package(urdf REQUIRED)
+find_package(pluginlib REQUIRED)
+find_package(hardware_interface)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
@@ -33,6 +35,10 @@ install(DIRECTORY launch
 )
 
 install(DIRECTORY description
+  DESTINATION share/${PROJECT_NAME}
+)
+
+install(DIRECTORY config
   DESTINATION share/${PROJECT_NAME}
 )
 
