@@ -342,68 +342,68 @@
     <disableFixedJointLumping>true</disableFixedJointLumping>
   </gazebo>
 
-    <gazebo reference="panda_link0">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_link0">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_link1">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_link1">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_link2">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_link2">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_link3">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_link3">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_link4">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_link4">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_link5">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_link5">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_link6">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_link6">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_link7">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_link7">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_link8">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_link8">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_hand">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_hand">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_leftfinger">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_leftfinger">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-    <gazebo reference="panda_rightfinger">
-      <material>Gazebo/Orange</material>
-    </gazebo>
+  <gazebo reference="panda_rightfinger">
+    <material>Gazebo/Orange</material>
+  </gazebo>
 
-  <!-- ros_control plugin -->
-  <!-- <gazebo>
+  <!-- ros2_control plugin -->
+  <gazebo>
     <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
-      <parameters>$(find panda_gazebo)/config/ros_control.yaml</parameters>
+      <parameters>$(find panda_gazebo)/config/ros2_control.yaml</parameters>
     </plugin>
-  </gazebo> -->
+  </gazebo>
 
-  <!-- <ros2_control name="panda" type="system">
+  <ros2_control name="panda" type="system">
       <hardware>
-        <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+        <plugin>fake_components/GenericSystem</plugin>
       </hardware>
 
       <joint name="panda_joint1">
-        <command_interface name="effort">
+        <command_interface name="position">
           <param name="min">-500</param>
           <param name="max">-500</param>
         </command_interface>
@@ -411,7 +411,7 @@
       </joint>
 
       <joint name="panda_joint2">
-        <command_interface name="effort">
+        <command_interface name="position">
           <param name="min">-500</param>
           <param name="max">-500</param>
         </command_interface>
@@ -419,7 +419,7 @@
       </joint>
 
       <joint name="panda_joint3">
-        <command_interface name="effort">
+        <command_interface name="position">
           <param name="min">-500</param>
           <param name="max">-500</param>
         </command_interface>
@@ -427,7 +427,7 @@
       </joint>
 
       <joint name="panda_joint4">
-        <command_interface name="effort">
+        <command_interface name="position">
           <param name="min">-500</param>
           <param name="max">-500</param>
         </command_interface>
@@ -435,7 +435,7 @@
       </joint>
 
       <joint name="panda_joint5">
-        <command_interface name="effort">
+        <command_interface name="position">
           <param name="min">-500</param>
           <param name="max">-500</param>
         </command_interface>
@@ -443,7 +443,7 @@
       </joint>
 
       <joint name="panda_joint6">
-        <command_interface name="effort">
+        <command_interface name="position">
           <param name="min">-500</param>
           <param name="max">-500</param>
         </command_interface>
@@ -451,15 +451,15 @@
       </joint>
 
       <joint name="panda_joint7">
-        <command_interface name="effort">
+        <command_interface name="position">
           <param name="min">-500</param>
           <param name="max">-500</param>
         </command_interface>
         <state_interface name="position"/>
       </joint>
 
-      <joint name="panda_finger_joint1">
-        <command_interface name="effort">
+      <!-- <joint name="panda_finger_joint1">
+        <command_interface name="position">
           <param name="min">-500</param>
           <param name="max">-500</param>
         </command_interface>
@@ -467,12 +467,12 @@
       </joint>
 
       <joint name="panda_finger_joint2">
-        <command_interface name="effort">
+        <command_interface name="position">
           <param name="min">-500</param>
           <param name="max">-500</param>
         </command_interface>
         <state_interface name="position"/>
-      </joint>
-  </ros2_control> -->
+      </joint> -->
+  </ros2_control>
 
 </robot>
