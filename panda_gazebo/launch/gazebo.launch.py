@@ -3,8 +3,10 @@ from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument
-from launch.substitutions import LaunchConfiguration
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+from launch_ros.substitutions import FindPackageShare
 from ament_index_python.packages import get_package_share_directory
+from launch.actions import TimerAction
 import os
 
 
@@ -25,12 +27,25 @@ def generate_launch_description():
         robot_description = ''.join(line for line in lines if not line.strip().startswith('<?xml'))
 
 
+    robot_controllers = os.path.join(
+        get_package_share_directory("panda_gazebo"),
+        "config",
+        "ros2_control.yaml"
+    )
+
+    print("\n", robot_controllers, "\n")
+
     gazebo_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
             os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gazebo.launch.py')
         ]),
         launch_arguments={'gui': gui}.items()
     )
+
+    # gazebo_launch = IncludeLaunchDescription(
+    #         PythonLaunchDescriptionSource([os.path.join(
+    #             get_package_share_directory('gazebo_ros'), 'launch'), '/gazebo.launch.py']),
+    #         )
 
     jsp_node = Node(package='joint_state_publisher',
                     executable='joint_state_publisher',
@@ -56,10 +71,29 @@ def generate_launch_description():
         output='screen'
     )
 
+    control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        parameters=[robot_controllers],
+        output="both",
+        remappings=[
+            ("~/robot_description", "/robot_description"),
+        ],
+    )
+
+    cspawner_node = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["panda_arm_controller", "--controller-manager", "/controller_manager"],
+        output="screen",
+    )
+
     return LaunchDescription([
         gui_arg,
         gazebo_launch,
         jsp_node,
         rsp_node,
-        spawn_node
+        spawn_node,
+        control_node,
+        cspawner_node
     ])
