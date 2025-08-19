@@ -32,12 +32,6 @@ int main(int argc, char* argv[])
     node_opts.automatically_declare_parameters_from_overrides(true);
     auto node = rclcpp::Node::make_shared("panda_cartesian_planning", node_opts);
 
-    // // Spin executor on a single thread
-    // rclcpp::executors::SingleThreadedExecutor executor;
-    // executor.add_node(node);
-
-    // std::thread([&executor](){executor.spin();}).detach();
-
     // Setup planning interface
     static const std::string PLANNING_GROUP{"panda_arm"};
     moveit::planning_interface::MoveGroupInterface move_group(node, PLANNING_GROUP);

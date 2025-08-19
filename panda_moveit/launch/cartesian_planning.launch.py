@@ -1,5 +1,8 @@
 from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
+from launch_ros.parameter_descriptions import ParameterValue
 from moveit_configs_utils import MoveItConfigsBuilder
 
 
@@ -19,4 +22,17 @@ def generate_launch_description():
         ],
     )
 
-    return LaunchDescription([move_group_demo])
+    path_publisher = Node(
+        name="path_publisher",
+        package="panda_moveit",
+        executable="path_publisher",
+        output="screen",
+        parameters=[
+            {'circle_center_x' : '0.5'}
+        ]
+    )
+
+    return LaunchDescription([
+        path_publisher,
+        move_group_demo,
+    ])
