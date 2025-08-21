@@ -11,6 +11,7 @@ find_package(moveit_ros_planning_interface REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(moveit_ros_planning_interface REQUIRED)
 find_package(moveit_visual_tools REQUIRED)
+find_package(control_msgs)
 
 add_executable(panda_cartesian_planning src/panda_cartesian_planning.cpp)
 add_executable(path_publisher src/path_publisher.cpp)
@@ -21,6 +22,7 @@ target_include_directories(panda_cartesian_planning
 
 ament_target_dependencies(panda_cartesian_planning 
   rclcpp
+  control_msgs
   geometry_msgs
   moveit_msgs
   moveit_ros_planning_interface
