@@ -2,6 +2,7 @@ import os
 import launch
 from launch.event_handlers import OnProcessIO
 from launch.event_handlers import OnProcessExit
+from launch.event_handlers import OnProcessStart
 from launch_ros.actions import Node
 from launch import LaunchDescription
 from ament_index_python.packages import get_package_share_directory
@@ -61,6 +62,12 @@ def generate_launch_description():
         arguments=['panda_arm_controller', '-c', 'controller_manager']+controller_manager_timeout
     )
 
+    startup_pose_node = Node(
+        package='panda_webots',
+        executable='panda_startup_pose.py',
+        output='screen'
+    )
+
     return LaunchDescription([
         spawn_panda,
         robot_state_publisher,
@@ -72,6 +79,14 @@ def generate_launch_description():
             event_handler=OnProcessIO(
                 target_action=spawn_panda,
                 on_stdout= lambda event: get_webots_driver_node(event, panda_driver)
+            )
+        ),
+
+        # Launch startup pose node after panda controller
+        launch.actions.RegisterEventHandler(
+            event_handler=OnProcessStart(
+                target_action=panda_arm_controller,
+                on_start=[startup_pose_node]
             )
         ),
 
