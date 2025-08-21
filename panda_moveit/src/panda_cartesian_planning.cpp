@@ -13,10 +13,26 @@
 #include <moveit/planning_scene_interface/planning_scene_interface.h>
 #include <moveit_visual_tools/moveit_visual_tools.h>
 
+#include <rclcpp_action/rclcpp_action.hpp>
+#include <control_msgs/action/follow_joint_trajectory.hpp>
+#include <trajectory_msgs/msg/joint_trajectory_point.hpp>
+
+typedef control_msgs::action::FollowJointTrajectory FJT;
+
 static const rclcpp::Logger LOGGER{rclcpp::get_logger("PCP")};
 
 nav_msgs::msg::Path TARGET_PATH;
 bool GOT_PATH{false};
+
+static const std::vector<std::string> JOINTS = {
+  "panda_joint1","panda_joint2","panda_joint3",
+  "panda_joint4","panda_joint5","panda_joint6","panda_joint7"
+};
+
+static const std::vector<double> READY = {
+  0.0, -0.7853981633974483, 0.0, -2.356194490192345,
+  0.0,  1.5707963267948966, 0.7853981633974483
+};
 
 void callback(const nav_msgs::msg::Path& path_msg){
     TARGET_PATH = path_msg;
@@ -106,15 +122,49 @@ int main(int argc, char* argv[])
 
     move_group.execute(trajectory);
 
-    // Stage 3: Move to starting position
-    move_group.setPoseTarget(start_pose);
-    moveit::planning_interface::MoveGroupInterface::Plan recovery_plan;
+    // Stage 3: Recovery to starting position
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 
-    success = (move_group.plan(recovery_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+    auto client = rclcpp_action::create_client<FJT>(
+        node, "/panda_arm_controller/follow_joint_trajectory"
+    );
 
-    RCLCPP_INFO(LOGGER, "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+    FJT::Goal goal;
+    goal.trajectory.joint_names = JOINTS;
 
-    move_group.move();
+    trajectory_msgs::msg::JointTrajectoryPoint pt;
+    pt.positions = READY;
+    pt.time_from_start.sec = 2;
+    pt.time_from_start.nanosec = 0;
+    goal.trajectory.points.push_back(pt);
+
+    RCLCPP_INFO(LOGGER, "Starting recovery motion");
+
+    auto send_goal_future = client->async_send_goal(goal);
+
+    if (rclcpp::spin_until_future_complete(node, send_goal_future)
+      != rclcpp::FutureReturnCode::SUCCESS) {
+      RCLCPP_ERROR(LOGGER, "Failed to send goal.");
+      rclcpp::shutdown();
+      return 1;
+    }
+
+    auto goal_handle = send_goal_future.get();
+    if (!goal_handle || !(goal_handle->get_status() ==
+                          rclcpp_action::GoalStatus::STATUS_ACCEPTED)) {
+      RCLCPP_ERROR(LOGGER, "Goal was rejected by the controller.");
+      rclcpp::shutdown();
+      return 1;
+    }
+
+    RCLCPP_INFO(LOGGER, "Goal accepted. Waiting for result...");
+    auto result_future = client->async_get_result(goal_handle);
+    if (rclcpp::spin_until_future_complete(node, result_future)
+        != rclcpp::FutureReturnCode::SUCCESS) {
+      RCLCPP_ERROR(LOGGER, "Failed to get result.");
+      rclcpp::shutdown();
+      return 1;
+    }
 
     return 0;
 }
