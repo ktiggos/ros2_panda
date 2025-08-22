@@ -7,8 +7,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.33185733874619844 -0.09874274160469809 0.9381474178937331 3.686018050088086
-  position 1.700313773507203 1.0549607538959629 1.4846240848267684
+  orientation -0.18174181263465833 -0.094853050209299 0.9787608555751812 4.24307584874527
+  position 1.4512561151950456 2.2704113488411726 0.8201166652553218
 }
 TexturedBackground {
 }
@@ -16,4 +16,26 @@ TexturedBackgroundLight {
 }
 CircleArena {
   radius 3
+}
+Solid {
+  translation 0.5 2.6540484176206613e-18 0.18077240000000006
+  rotation -0.06242220031459755 -0.8791863403153783 0.47237151471139327 7.576903814195464e-17
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+        }
+      }
+      geometry Box {
+        size 0.35 0.35 0.4
+      }
+    }
+  ]
+  boundingObject Box {
+    size 0.35 0.35 0.4
+  }
+  physics Physics {
+  }
+  linearVelocity 1.0893421023763114e-17 1.3703066700740534e-18 -2.336108084342397e-16
+  angularVelocity -1.9710920031199452e-16 1.9710920031199472e-16 1.6541142137061544e-18
 }
