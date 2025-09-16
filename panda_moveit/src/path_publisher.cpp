@@ -7,7 +7,7 @@
 static const rclcpp::Logger LOGGER{rclcpp::get_logger("PP")};
 
 
-std::vector<geometry_msgs::msg::PoseStamped> generate_path(double x0, double y0, double radius, double dtheta)
+std::vector<geometry_msgs::msg::PoseStamped> generate_path(double x0, double y0, double z0, double radius, double dtheta)
 {
     std::vector<geometry_msgs::msg::PoseStamped> waypoints;
 
@@ -20,7 +20,7 @@ std::vector<geometry_msgs::msg::PoseStamped> generate_path(double x0, double y0,
     point.pose.orientation.y = 0.0;
     point.pose.orientation.z = 0.0;
     point.pose.orientation.w = 0.0;    
-    point.pose.position.z = 0.4;
+    point.pose.position.z = z0; // Circle parallel to XY plane
 
     RCLCPP_INFO(LOGGER, "Calculating waypoints for circle: x = %0.2f, y = %0.2f, r = %0.2F",x0,y0,radius);
 
@@ -49,9 +49,20 @@ int main(int argc, char* argv[])
     node_opts.automatically_declare_parameters_from_overrides(true);
     rclcpp::Node::SharedPtr node = rclcpp::Node::make_shared("path_publisher", node_opts);
 
-    auto publisher = node->create_publisher<nav_msgs::msg::Path>("target_path", 10);
+    double x0, y0, z0, radius, dtheta;
+    std::string path_topic;
 
-    auto waypoints = generate_path(0.5, 0.0, 0.15, 0.01);
+    // Load parameters from launch
+    node->get_parameter("center_x", x0);
+    node->get_parameter("center_y", y0);
+    node->get_parameter("center_z", z0);
+    node->get_parameter("radius", radius);
+    node->get_parameter("dtheta",dtheta);
+    node->get_parameter("path_topic",path_topic);
+
+    auto publisher = node->create_publisher<nav_msgs::msg::Path>(path_topic, 10);
+
+    auto waypoints = generate_path(x0, y0, z0, radius, dtheta);
 
     // Convert vector to Path msg
     nav_msgs::msg::Path target_path;

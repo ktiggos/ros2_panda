@@ -28,7 +28,12 @@ def generate_launch_description():
         executable="path_publisher",
         output="screen",
         parameters=[
-            {'circle_center_x' : '0.5'}
+            {'center_x': 0.5},
+            {'center_y': 0.0},
+            {'center_z': 0.4},
+            {'radius': 0.15},
+            {'dtheta': 0.01},
+            {'path_topic': "target_path"},
         ]
     )
 
