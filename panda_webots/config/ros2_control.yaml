@@ -7,6 +7,9 @@ controller_manager:
 
     panda_arm_controller:
       type: joint_trajectory_controller/JointTrajectoryController
+    
+    panda_gripper_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
 
 panda_arm_controller:
   ros__parameters:
@@ -22,3 +25,15 @@ panda_arm_controller:
       - position
     state_interfaces:
       - position
+      - velocity
+
+panda_gripper_controller:
+  ros__parameters:
+    joints:
+      - panda_finger_joint1
+      - panda_finger_joint2
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
