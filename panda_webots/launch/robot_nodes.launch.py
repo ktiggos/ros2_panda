@@ -55,11 +55,18 @@ def generate_launch_description():
         arguments=['joint_state_broadcaster', '-c', 'controller_manager'] + controller_manager_timeout
     )
 
-    panda_arm_controller=Node(
+    panda_arm_controller = Node(
         package='controller_manager',
         executable='spawner',
         output='screen',
         arguments=['panda_arm_controller', '-c', 'controller_manager']+controller_manager_timeout
+    )
+
+    panda_gripper_controller = Node(
+        package='controller_manager',
+        executable='spawner',
+        output='screen',
+        arguments=['panda_gripper_controller', '-c', 'controller_manager']+controller_manager_timeout
     )
 
     startup_pose_node = Node(
@@ -73,6 +80,7 @@ def generate_launch_description():
         robot_state_publisher,
         joint_state_broadcaster,
         panda_arm_controller,
+        panda_gripper_controller,
 
         # Launch controller manager node after URDF spawn
         launch.actions.RegisterEventHandler(
