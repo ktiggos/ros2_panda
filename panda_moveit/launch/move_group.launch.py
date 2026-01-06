@@ -5,6 +5,7 @@ import yaml
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
+from moveit_configs_utils import MoveItConfigsBuilder
 
 WB_PKG = 'panda_webots'
 MOVE_PKG = 'panda_moveit'
@@ -21,27 +22,19 @@ def generate_launch_description():
     urdf_path = os.path.join(webots_pkg, 'description', 'panda', 'panda.urdf')
     srdf_path = os.path.join(moveit_pkg, 'config', 'panda.srdf')
     kin_yaml = os.path.join(moveit_pkg, 'config/yaml', 'kinematics.yaml')
-    # ctrl_yaml = os.path.join(moveit_pkg, 'config/yaml', 'controllers.yaml')
-    ompl_yaml = os.path.join(moveit_pkg, 'config/yaml', 'ompl_planning_minimal.yaml')
-
-    # Params
-    robot_description = read_file(urdf_path)
-    robot_description_semantic = read_file(srdf_path)
-
+    ctrl_yaml = os.path.join(moveit_pkg, 'config/yaml', 'controllers.yaml')
+    ompl_yaml = os.path.join(moveit_pkg, 'config/yaml', 'ompl_planning.yaml')
+    
     move_group_params = [
-        {'robot_description': robot_description},
-        {'robot_description_semantic': robot_description_semantic},
+        {"robot_description": read_file(urdf_path)},
+        {"robot_description_semantic": read_file(srdf_path)},
         kin_yaml,
-        # ctrl_yaml,
-        # Use control interface for automatic controller discovery
-        {'moveit_controller_manager': 'moveit_ros_control_interface/Ros2ControlManager'},
         ompl_yaml,
-        {'use_sim_time': True},
-        {'planning_scene_monitor.publish_planning_scene': True},
-        {'planning_scene_monitor.publish_geometry_updates': True},
-        {'planning_scene_monitor.publish_state_updates': True},
-        {'planning_scene_monitor.publish_transforms_updates': True},
-        {'allow_trajectory_execution': True},
+        ctrl_yaml,
+        {"moveit_controller_manager": "moveit_simple_controller_manager/MoveItSimpleControllerManager"},
+        {"allow_trajectory_execution": True},
+        {"moveit_controller_manager_service_timeout": 10.0},
+        {"use_sim_time": True},
     ]
 
     move_group = Node(
