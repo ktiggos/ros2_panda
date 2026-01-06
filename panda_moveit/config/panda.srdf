@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <robot name="panda">
+
+  <virtual_joint name="world_joint" type="fixed" parent_frame="world" child_link="panda_link0"/>
+  
   <group name="panda_arm">
     <joint name="panda_joint1"/>
     <joint name="panda_joint2"/>
