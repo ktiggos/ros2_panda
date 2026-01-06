@@ -14,13 +14,26 @@ find_package(moveit_visual_tools REQUIRED)
 find_package(control_msgs)
 
 add_executable(panda_cartesian_planning src/panda_cartesian_planning.cpp)
+add_executable(panda_pick_and_place src/panda_pick_and_place.cpp)
 add_executable(path_publisher src/path_publisher.cpp)
 
 target_include_directories(panda_cartesian_planning
   PUBLIC include
 )
+target_include_directories(panda_pick_and_place
+  PUBLIC include
+)
 
 ament_target_dependencies(panda_cartesian_planning 
+  rclcpp
+  control_msgs
+  geometry_msgs
+  moveit_msgs
+  moveit_ros_planning_interface
+  moveit_visual_tools
+)
+
+ament_target_dependencies(panda_pick_and_place
   rclcpp
   control_msgs
   geometry_msgs
@@ -37,6 +50,7 @@ ament_target_dependencies(path_publisher
 
 install(TARGETS
   panda_cartesian_planning
+  panda_pick_and_place
   path_publisher
   DESTINATION lib/${PROJECT_NAME}
 )
