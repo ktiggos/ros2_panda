@@ -1,0 +1,50 @@
+#VRML_SIM R2025a utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2022b/projects/objects/floors/protos/CircleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2025a/projects/objects/tables/protos/Table.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.17860620546529415 -0.1037229198185509 0.9784382347770366 4.68595062644735
+  position 0.14832072318610426 2.8485939634986845 1.2213705898694098
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+CircleArena {
+  radius 3
+}
+Solid {
+  translation 0.49 -7.245765709584469e-17 0.4748528499999999
+  rotation 0.04064308271466609 -0.002821432336583766 0.9991697450118369 1.4405965742480109e-15
+  children [
+    Shape {
+      appearance Appearance {
+        material Material {
+          diffuseColor 0 0.8 0
+        }
+        texture ImageTexture {
+        }
+      }
+      geometry Box {
+        size 0.05 0.05 0.15
+      }
+    }
+  ]
+  boundingObject Box {
+    size 0.05 0.05 0.15
+  }
+  physics Physics {
+  }
+  linearVelocity -5.0850350999644966e-17 -8.748884115571526e-17 6.476964249008563e-16
+  angularVelocity 1.2789769243681868e-15 -5.684341886080788e-16 1.8976983098348456e-16
+}
+Table {
+  translation 0.5 0 0
+  size 0.4 0.6 0.4
+  feetSize 0.05 0.05
+}
